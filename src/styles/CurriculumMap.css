@@ -1,0 +1,99 @@
+.map-container {
+    padding: var(--spacing-2xl) 0;
+    display: flex;
+    justify-content: center;
+}
+
+.map-path {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-2xl);
+    width: 100%;
+    max-width: 600px;
+    position: relative;
+}
+
+/* Vertical Line connecting nodes */
+.map-path::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 4px;
+    background-color: var(--border-color);
+    transform: translateX(-50%);
+    z-index: 0;
+}
+
+.tier-section {
+    position: relative;
+    z-index: 1;
+    background: var(--bg-primary);
+    /* Mask the line behind headers */
+    padding: var(--spacing-lg) 0;
+}
+
+.modules-path {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-xl);
+}
+
+.path-node-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-sm);
+    position: relative;
+    z-index: 2;
+}
+
+.path-node {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 4px solid transparent;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 0 var(--border-color);
+}
+
+.path-node:active {
+    transform: translateY(4px);
+    box-shadow: none;
+}
+
+.path-node.unlocked {
+    background-color: var(--accent-primary);
+    color: white;
+    border-color: var(--accent-hover);
+    box-shadow: 0 6px 0 var(--accent-hover);
+}
+
+.path-node.completed {
+    background-color: var(--accent-gold);
+    border-color: #d97706;
+    box-shadow: 0 6px 0 #d97706;
+}
+
+.path-node.locked {
+    background-color: var(--bg-tertiary);
+    color: var(--text-muted);
+    border-color: var(--border-color);
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+.node-label {
+    background: white;
+    padding: var(--spacing-xs) var(--spacing-md);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-sm);
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}

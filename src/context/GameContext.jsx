@@ -11,32 +11,32 @@ export const useGame = () => {
 };
 
 export const GameProvider = ({ children }) => {
-  // State Management Variables
-  const [userRank, setUserRank] = useState('Apprentice'); // Apprentice, Hunter, Sniper
-  const [currentSymbol, setCurrentSymbol] = useState('NQ');
-  const [hearts, setHearts] = useState(5);
-  const [xp, setXp] = useState(0);
+  // --- State Management Variables ---
+
+  // Identity & Progression
+  const [userRank, setUserRank] = useState('Apprentice'); // Apprentice, Hunter, Sniper, Elite
+  const [difficulty, setDifficulty] = useState('Beginner'); // Beginner, Intermediate, Advanced, Elite
+  const [chosenSymbol, setChosenSymbol] = useState(null); // e.g., 'NQ', 'BTC', 'EURUSD'
+  const [placementCompleted, setPlacementCompleted] = useState(false);
+
+  // Economy & Health
+  const [pot, setPot] = useState(10000); // Starting capital (The Pot)
   const [streak, setStreak] = useState(0);
-  const [isCooldown, setIsCooldown] = useState(false);
+  const [xp, setXp] = useState(0);
+
+  // Learning State
   const [completedModules, setCompletedModules] = useState([]);
+  const [restorePoint, setRestorePoint] = useState(null); // { moduleId, frameId }
 
   // Constants
-  const MAX_HEARTS = 5;
+  const STARTING_POT = 10000;
   const XP_CORRECT = 20;
   const XP_SPEED_BONUS = 10;
 
-  // Actions
-  const damageHeart = () => {
-    if (hearts > 0) {
-      setHearts(prev => prev - 1);
-      setStreak(0);
-    }
-  };
+  // --- Actions ---
 
-  const restoreHeart = () => {
-    if (hearts < MAX_HEARTS) {
-      setHearts(prev => prev + 1);
-    }
+  const updatePot = (amount) => {
+    setPot(prev => Math.max(0, prev + amount));
   };
 
   const addXp = (amount) => {
@@ -47,42 +47,45 @@ export const GameProvider = ({ children }) => {
     setStreak(prev => prev + 1);
   };
 
+  const resetStreak = () => {
+    setStreak(0);
+  };
+
   const completeModule = (moduleId) => {
     if (!completedModules.includes(moduleId)) {
       setCompletedModules(prev => [...prev, moduleId]);
     }
   };
 
-  const resetGame = () => {
-    setHearts(MAX_HEARTS);
-    setStreak(0);
-    setIsCooldown(false);
+  const setRestore = (moduleId, frameId) => {
+    setRestorePoint({ moduleId, frameId });
   };
 
-  // Check for "Margin Call"
-  useEffect(() => {
-    if (hearts === 0) {
-      setIsCooldown(true);
-    }
-  }, [hearts]);
+  const clearRestore = () => {
+    setRestorePoint(null);
+  };
+
+  // Reset Game (Full Wipe)
+  const resetGame = () => {
+    setPot(STARTING_POT);
+    setStreak(0);
+    setXp(0);
+    setCompletedModules([]);
+    setRestorePoint(null);
+    // We might keep placement/symbol or reset them too depending on strictness
+  };
 
   const value = {
-    userRank,
-    setUserRank,
-    currentSymbol,
-    setCurrentSymbol,
-    hearts,
-    xp,
-    streak,
-    isCooldown,
-    completedModules,
-    damageHeart,
-    restoreHeart,
-    addXp,
-    incrementStreak,
-    completeModule,
-    resetGame,
-    setIsCooldown
+    userRank, setUserRank,
+    difficulty, setDifficulty,
+    chosenSymbol, setChosenSymbol,
+    placementCompleted, setPlacementCompleted,
+    pot, updatePot,
+    streak, incrementStreak, resetStreak,
+    xp, addXp,
+    completedModules, completeModule,
+    restorePoint, setRestore, clearRestore,
+    resetGame
   };
 
   return (

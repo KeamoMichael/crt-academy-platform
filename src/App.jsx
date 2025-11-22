@@ -1,18 +1,25 @@
 import React, { useState } from 'react';
 import HUD from './components/Layout/HUD';
-import CurriculumTree from './components/Dashboard/CurriculumTree';
-import SimulationEngine from './components/Simulation/SimulationEngine';
+import CurriculumMap from './components/Dashboard/CurriculumMap';
+import LessonEngine from './components/Lesson/LessonEngine';
+import PlacementAssessment from './components/Onboarding/PlacementAssessment';
 import { useGame } from './context/GameContext';
 import { CURRICULUM } from './data/curriculum';
 
+import PracticalSimulator from './components/Simulation/PracticalSimulator';
+
 function App() {
-  const { userRank } = useGame();
-  const [currentView, setCurrentView] = useState('dashboard'); // dashboard, simulation
+  const { userRank, placementCompleted } = useGame();
+  const [currentView, setCurrentView] = useState('dashboard'); // dashboard, lesson, practical
   const [activeModuleId, setActiveModuleId] = useState(null);
+
+  if (!placementCompleted) {
+    return <PlacementAssessment />;
+  }
 
   const handleSelectModule = (moduleId) => {
     setActiveModuleId(moduleId);
-    setCurrentView('simulation');
+    setCurrentView('lesson');
   };
 
   const handleCompleteModule = () => {
@@ -20,9 +27,13 @@ function App() {
     setActiveModuleId(null);
   };
 
-  const handleExitSimulation = () => {
+  const handleExitLesson = () => {
     setCurrentView('dashboard');
     setActiveModuleId(null);
+  };
+
+  const handleExitPractical = () => {
+    setCurrentView('dashboard');
   };
 
   // Helper to find module title
@@ -40,14 +51,24 @@ function App() {
       <main className="container" style={{ paddingTop: '100px', paddingBottom: '50px' }}>
         {currentView === 'dashboard' ? (
           <>
-            <h1 style={{ textAlign: 'center', marginTop: '2rem', marginBottom: '2rem' }}>CRT ACADEMY ENGINE</h1>
-            <CurriculumTree onSelectModule={handleSelectModule} />
+            <div className="flex justify-between items-center mb-8">
+              <h1 className="text-2xl font-bold text-primary">CRT ACADEMY</h1>
+              <button
+                className="btn-outline"
+                onClick={() => setCurrentView('practical')}
+              >
+                PRACTICAL MODE
+              </button>
+            </div>
+            <CurriculumMap onSelectModule={handleSelectModule} />
           </>
+        ) : currentView === 'practical' ? (
+          <PracticalSimulator onExit={handleExitPractical} />
         ) : (
-          <SimulationEngine
+          <LessonEngine
             module={getModule(activeModuleId)}
             onComplete={handleCompleteModule}
-            onExit={handleExitSimulation}
+            onExit={handleExitLesson}
           />
         )}
       </main>

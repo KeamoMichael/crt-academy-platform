@@ -1,0 +1,29 @@
+.simulator-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: var(--spacing-md);
+}
+
+.sim-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-lg);
+}
+
+.chart-area {
+    height: 400px;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+}
+
+.controls-area {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: var(--spacing-md);
+}
+
+.stats-card {
+    padding: var(--spacing-md);
+    background: white;
+}
