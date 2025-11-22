@@ -1,0 +1,60 @@
+.hud-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 64px;
+    background-color: rgba(10, 10, 10, 0.8);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border-color);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+}
+
+.hud-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.hud-section {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+}
+
+.hud-item {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+}
+
+.hud-label {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    font-weight: 600;
+    letter-spacing: 0.05em;
+}
+
+.hud-value {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: 0.9rem;
+}
+
+.hud-divider {
+    color: var(--border-color);
+    font-size: 1.2rem;
+    font-weight: 300;
+}
+
+.hearts-display {
+    display: flex;
+    gap: 4px;
+}
+
+.heart-filled {
+    filter: drop-shadow(0 0 8px rgba(239, 68, 68, 0.4));
+}
